@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điệp Vụ: Kiểm Tra Hóa 11 - Chương 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a; 
+            --primary-light: #3b82f6;
+            --secondary: #dc2626; 
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 15px 10px; display: flex; justify-content: center; line-height: 1.6; }
+        .container { max-width: 850px; width: 100%; }
+
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); border-top: 5px solid var(--primary); }
+        .header-card { text-align: center; background: linear-gradient(135deg, #0f172a, #1e3a8a); color: white; border-top: none; }
+        .header-card h1 { margin: 0 0 5px 0; font-size: 1.8rem; text-transform: uppercase; color: #f87171; }
+        .header-card h2 { margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 500; opacity: 0.9; }
+        
+        .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+        .student-info input { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; text-align: center;}
+
+        h3 { color: var(--primary); margin-top: 0; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; text-transform: uppercase; font-size: 1.2rem;}
+        
+        input[type="text"], select { width: 100%; padding: 10px; border: 1.5px solid #d1d5db; border-radius: 6px; font-size: 15px; transition: 0.3s; font-family: 'Roboto', sans-serif;}
+        input[type="text"]:focus, select:focus { border-color: var(--primary); outline: none; }
+
+        .question { margin-bottom: 20px; background: #f9fafb; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; }
+        .question-text { font-weight: bold; margin-top: 0; margin-bottom: 12px; font-size: 1.05rem; }
+
+        .options label { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; padding: 10px; border-radius: 6px; background: #fff; border: 1px solid #e5e7eb; transition: 0.2s; }
+        .options label:hover { background: #f3f4f6; }
+        .options input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .tf-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+        .tf-opts { display: flex; gap: 10px; justify-content: flex-end; }
+        .tf-opts label { background: #fff; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer;}
+        
+        .btn-submit { width: 100%; border: none; padding: 16px; font-size: 16px; border-radius: 30px; cursor: pointer; font-weight: bold; text-transform: uppercase; color: white; background: linear-gradient(135deg, var(--secondary), #991b1b); box-shadow: 0 4px 6px rgba(220, 38, 38, 0.3); margin-top: 20px;}
+        .btn-checkpoint { width: 100%; border: none; padding: 16px; font-size: 16px; border-radius: 12px; cursor: pointer; font-weight: bold; text-transform: uppercase; color: white; background: linear-gradient(135deg, #059669, #047857); box-shadow: 0 4px 6px rgba(5, 150, 105, 0.3); margin-top: 20px; transition: 0.3s;}
+        
+        .remedial-box { display: none; margin-top: 20px; padding: 20px; background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 8px; text-align: left; }
+        .remedial-box h4 { color: #b45309; font-size: 1.2rem; margin-top: 0; text-align: center; text-transform: uppercase;}
+        
+        .section-locked { display: none; opacity: 0; transition: opacity 1s ease-in-out; }
+
+        @media(max-width: 600px) { 
+            .student-info { grid-template-columns: 1fr; } 
+            .tf-grid { grid-template-columns: 1fr; }
+            .tf-opts { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TRẠM CHỈ HUY -->
+        <div class="card header-card">
+            <h1>ĐỀ KIỂM TRA LỚP 11 – CHƯƠNG 2</h1>
+            <h2>CHUYÊN ÁN HÓA HỌC: NITROGEN & SULFUR</h2>
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px;">
+                <button type="button" id="btnSound" onclick="toggleSound()" style="background: #10b981; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.3s;">
+                    🔊 Âm thanh: BẬT
+                </button>
+            </div>
+            <p style="font-style: italic; color: #e2e8f0; font-size: 0.9rem; margin-top: 10px;">Thời gian làm bài: 50 phút</p>
+            <div class="student-info">
+                <input type="text" id="studentName" placeholder="Họ và tên thí sinh..." required>
+                <input type="text" id="studentClass" placeholder="Lớp..." required>
+            </div>
+        </div>
+
+        <form id="quizForm">
+            <!-- ================= PHẦN I: TRẮC NGHIỆM ================= -->
+            <div id="part1-section" class="card">
+                <h3>📂 TRẠM 1: CÂU TRẮC NGHIỆM ĐA LỰA CHỌN</h3>
+                <p style="font-style: italic; color: #6b7280; margin-top: -10px; margin-bottom: 20px;">* Nhiệm vụ: Trả lời 18 câu hỏi trắc nghiệm. Yêu cầu đúng >= 12/18 câu để qua ải.</p>
+
+                <!-- Q1 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 1. Trong không khí, chất nào sau đây chiếm phần trăm thể tích lớn nhất?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q1" value="A"> A. O2.</label>
+                        <label><input type="radio" name="p1_q1" value="B"> B. NO.</label>
+                        <label><input type="radio" name="p1_q1" value="C"> C. CO2.</label>
+                        <label><input type="radio" name="p1_q1" value="D"> D. N2.</label>
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div class="question check-mcq-p1" data-ans="B">
+                    <p class="question-text">Câu 2. Khí nitrogen trơ về mặt hoá học ở điều kiện thường là do</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q2" value="A"> A. Phân tử có liên kết ba, năng lượng liên kết nhỏ.</label>
+                        <label><input type="radio" name="p1_q2" value="B"> B. Phân tử có liên kết ba, năng lượng liên kết lớn.</label>
+                        <label><input type="radio" name="p1_q2" value="C"> C. Phân tử có liên kết đôi, năng lượng liên kết lớn.</label>
+                        <label><input type="radio" name="p1_q2" value="D"> D. Phân tử có liên kết đôi, năng lượng liên kết nhỏ.</label>
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 3. Lí do khí nitrogen được bơm vào gói bim bim là</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q3" value="A"> A. diệt khuẩn để bảo quản bim bim lâu hơn.</label>
+                        <label><input type="radio" name="p1_q3" value="B"> B. tăng tính thẩm mĩ của gói bim bim.</label>
+                        <label><input type="radio" name="p1_q3" value="C"> C. tăng khối lượng cho gói bim bim.</label>
+                        <label><input type="radio" name="p1_q3" value="D"> D. tạo môi trường trơ bảo quản bim bim.</label>
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div class="question check-mcq-p1" data-ans="A">
+                    <p class="question-text">Câu 4. Phân tử ammonia có dạng hình học nào sau đây?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q4" value="A"> A. Chóp tam giác.</label>
+                        <label><input type="radio" name="p1_q4" value="B"> B. Chữ T.</label>
+                        <label><input type="radio" name="p1_q4" value="C"> C. Chóp tứ giác.</label>
+                        <label><input type="radio" name="p1_q4" value="D"> D. Tam giác đều.</label>
+                    </div>
+                </div>
+                <!-- Q5 -->
+                <div class="question check-mcq-p1" data-ans="A">
+                    <p class="question-text">Câu 5. Thí nghiệm: Khí ammonia trong bình, nước có vài giọt phenolphthalein. Hiện tượng xảy ra là</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q5" value="A"> A. nước phun vào bình và chuyển thành màu hồng.</label>
+                        <label><input type="radio" name="p1_q5" value="B"> B. nước phun vào bình và chuyển thành màu tím.</label>
+                        <label><input type="radio" name="p1_q5" value="C"> C. nước phun vào bình và không có màu.</label>
+                        <label><input type="radio" name="p1_q5" value="D"> D. nước phun vào bình và chuyển thành màu xanh.</label>
+                    </div>
+                </div>
+                <!-- Q6 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 6. Cho cân bằng: N2(g) + 3H2(g) ⇌ 2NH3(g) (ΔH < 0). Tổng số mol khí đạt cân bằng ở 400°C và 500°C lần lượt là x và y. Mối quan hệ giữa x và y là</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q6" value="A"> A. x > y.</label>
+                        <label><input type="radio" name="p1_q6" value="B"> B. x = y.</label>
+                        <label><input type="radio" name="p1_q6" value="C"> C. x < y.</label>
+                        <label><input type="radio" name="p1_q6" value="D"> D. 5x = 4y.</label>
+                    </div>
+                </div>
+                <!-- Q7 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 7. Phân biệt được dung dịch NH4Cl và NaCl bằng thuốc thử là dung dịch</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q7" value="A"> A. KCl.</label>
+                        <label><input type="radio" name="p1_q7" value="B"> B. KNO3.</label>
+                        <label><input type="radio" name="p1_q7" value="C"> C. KOH.</label>
+                        <label><input type="radio" name="p1_q7" value="D"> D. K2SO4.</label>
+                    </div>
+                </div>
+                <!-- Q8 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 8. Khi so sánh phân tử ammonia với ion ammonium, nhận định nào sau đây là đúng?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q8" value="A"> A. Đều chứa liên kết ion.</label>
+                        <label><input type="radio" name="p1_q8" value="B"> B. Đều có tính acid yếu trong nước.</label>
+                        <label><input type="radio" name="p1_q8" value="C"> C. Đều có tính base yếu trong nước.</label>
+                        <label><input type="radio" name="p1_q8" value="D"> D. Đều chứa nguyên tử N có số oxi hoá là -3.</label>
+                    </div>
+                </div>
+                <!-- Q9 -->
+                <div class="question check-mcq-p1" data-ans="A">
+                    <p class="question-text">Câu 9. Cho các phản ứng: (a) S+O2→SO2; (b) Hg+S→HgS; (c) H2+S→H2S; (d) Fe+S→FeS. Số phản ứng sulfur là chất khử?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q9" value="A"> A. 1.</label>
+                        <label><input type="radio" name="p1_q9" value="B"> B. 2.</label>
+                        <label><input type="radio" name="p1_q9" value="C"> C. 3.</label>
+                        <label><input type="radio" name="p1_q9" value="D"> D. 4.</label>
+                    </div>
+                </div>
+                <!-- Q10 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 10. Khi nhiệt kế thủy ngân vỡ, rắc chất bột nào sau đây lên thủy ngân rơi vãi sẽ chuyển hóa chúng thành hợp chất bền, ít độc hại?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q10" value="A"> A. Than đá.</label>
+                        <label><input type="radio" name="p1_q10" value="B"> B. Đá vôi.</label>
+                        <label><input type="radio" name="p1_q10" value="C"> C. Muối ăn.</label>
+                        <label><input type="radio" name="p1_q10" value="D"> D. Sulfur.</label>
+                    </div>
+                </div>
+                <!-- Q11 -->
+                <div class="question check-mcq-p1" data-ans="B">
+                    <p class="question-text">Câu 11. Sulfur dioxide đóng vai trò chất khử khi tác dụng với chất nào sau đây?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q11" value="A"> A. H2S.</label>
+                        <label><input type="radio" name="p1_q11" value="B"> B. NO2.</label>
+                        <label><input type="radio" name="p1_q11" value="C"> C. Mg.</label>
+                        <label><input type="radio" name="p1_q11" value="D"> D. KOH.</label>
+                    </div>
+                </div>
+                <!-- Q12 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 12. Nitrogen monoxide được tạo thành khi mưa dông kèm theo sấm sét do phản ứng giữa nitrogen và oxygen trong không khí được gọi là</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q12" value="A"> A. NOx tức thời.</label>
+                        <label><input type="radio" name="p1_q12" value="B"> B. NOx nhiệt.</label>
+                        <label><input type="radio" name="p1_q12" value="C"> C. NOx nhiên liệu.</label>
+                        <label><input type="radio" name="p1_q12" value="D"> D. NOx tự nhiên.</label>
+                    </div>
+                </div>
+                <!-- Q13 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 13. Hiện tượng phú dưỡng chủ yếu do hàm lượng các ion nào sau đây vượt quá mức cho phép?</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q13" value="A"> A. Sodium, potassium.</label>
+                        <label><input type="radio" name="p1_q13" value="B"> B. Calcium, magnesium.</label>
+                        <label><input type="radio" name="p1_q13" value="C"> C. Nitrate, phosphate.</label>
+                        <label><input type="radio" name="p1_q13" value="D"> D. Chloride, sulfate.</label>
+                    </div>
+                </div>
+                <!-- Q14 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 14. Cần tối đa bao nhiêu m3 H2S (ở đkc) để loại bỏ SO2 sinh ra khi đốt cháy 2,0 tấn than chứa sulfur chiếm 3% theo khối lượng? (Biết SO2 + 2H2S → 3S + 2H2O)</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q14" value="A"> A. 23,24 m3.</label>
+                        <label><input type="radio" name="p1_q14" value="B"> B. 30,99 m3.</label>
+                        <label><input type="radio" name="p1_q14" value="C"> C. 46,48 m3.</label>
+                        <label><input type="radio" name="p1_q14" value="D"> D. 34,86 m3.</label>
+                    </div>
+                </div>
+                <!-- Q15 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 15. Nhận định về HNO3: (a) Liên kết O-H phân cực về O; (b) N có số oxi hóa +5; (c) N có hóa trị IV; (d) Liên kết cho nhận N→O kém bền. Số nhận định đúng là</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q15" value="A"> A. 1.</label>
+                        <label><input type="radio" name="p1_q15" value="B"> B. 2.</label>
+                        <label><input type="radio" name="p1_q15" value="C"> C. 3.</label>
+                        <label><input type="radio" name="p1_q15" value="D"> D. 4.</label>
+                    </div>
+                </div>
+                <!-- Q16 -->
+                <div class="question check-mcq-p1" data-ans="D">
+                    <p class="question-text">Câu 16. Cách pha loãng dung dịch sulfuric acid đặc nào sau đây đúng?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q16" value="A"> A. Rót nhanh acid vào nước và khuấy đều.</label>
+                        <label><input type="radio" name="p1_q16" value="B"> B. Rót nhanh nước vào acid và khuấy đều.</label>
+                        <label><input type="radio" name="p1_q16" value="C"> C. Rót từ từ nước vào acid và khuấy đều.</label>
+                        <label><input type="radio" name="p1_q16" value="D"> D. Rót từ từ acid vào nước và khuấy đều.</label>
+                    </div>
+                </div>
+                <!-- Q17 -->
+                <div class="question check-mcq-p1" data-ans="A">
+                    <p class="question-text">Câu 17. Muối X không tan, được dùng làm chất cản quang xét nghiệm X-quang đường tiêu hóa. Công thức của X là</p>
+                    <div class="options" style="display: grid; grid-template-columns: 1fr 1fr;">
+                        <label><input type="radio" name="p1_q17" value="A"> A. BaSO4.</label>
+                        <label><input type="radio" name="p1_q17" value="B"> B. Na2SO4.</label>
+                        <label><input type="radio" name="p1_q17" value="C"> C. K2SO4.</label>
+                        <label><input type="radio" name="p1_q17" value="D"> D. MgSO4.</label>
+                    </div>
+                </div>
+                <!-- Q18 -->
+                <div class="question check-mcq-p1" data-ans="C">
+                    <p class="question-text">Câu 18. Người ta dùng H2SO4 đặc hấp thụ SO3 trong tháp tiếp xúc. Cách thực hiện nào đạt hiệu quả tốt nhất?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1_q18" value="A"> A. Cho SO3 lội qua dung dịch H2SO4.</label>
+                        <label><input type="radio" name="p1_q18" value="B"> B. SO3 phun từ phía trên, H2SO4 bơm từ dưới lên.</label>
+                        <label><input type="radio" name="p1_q18" value="C"> C. SO3 xả từ phía dưới tháp, H2SO4 phun từ trên xuống.</label>
+                        <label><input type="radio" name="p1_q18" value="D"> D. SO3 lội qua H2SO4 được khuấy liên tục với tốc độ cao.</label>
+                    </div>
+                </div>
+
+                <button type="button" id="btn-check-p1" class="btn-checkpoint" onclick="checkPart1()">🛑 XÁC THỰC TRẠM 1</button>
+                
+                <div id="remedial-p1" class="remedial-box">
+                    <h4>⚠️ BÁO ĐỘNG ĐỎ: LỖ HỔNG LÝ THUYẾT</h4>
+                    <p style="color: #374151; font-weight: bold; text-align: center;">Bạn chưa đạt đủ 12/18 câu. Vượt qua câu hỏi phụ để đi tiếp!</p>
+                    
+                    <div class="question" style="background: #fff; border: 1px solid #fcd34d;">
+                        <p class="question-text">1. (Củng cố) Nitrogen thể hiện tính gì khi tác dụng với O2 tạo NO ở nhiệt độ cao?</p>
+                        <div class="options check-rem-p1" data-ans="B">
+                            <label><input type="radio" name="r1_1" value="A"> A. Tính oxi hóa</label>
+                            <label><input type="radio" name="r1_1" value="B"> B. Tính khử</label>
+                        </div>
+                    </div>
+                    <button type="button" style="width: 100%; border: none; padding: 12px; font-size: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; background: #d97706; margin-top: 10px;" onclick="verifyRemedialP1()">🔄 KIỂM TRA & ĐI TIẾP</button>
+                </div>
+            </div>
+
+            <!-- ================= PHẦN II: ĐÚNG/SAI ================= -->
+            <div id="part2-section" class="section-locked">
+                <div class="card">
+                    <h3>📂 TRẠM 2: PHÂN TÍCH ĐÚNG/SAI</h3>
+                    <p style="font-style: italic; color: #6b7280; margin-top: -10px; margin-bottom: 20px;">* Nhiệm vụ: Phân tích 4 nhận định (16 ý). Yêu cầu đúng >= 12/16 ý để qua ải.</p>
+
+                    <div class="question">
+                        <p class="question-text">Câu 1. Hiện tượng phú dưỡng là một biểu hiện của môi trường ao, hồ bị ô nhiễm do dư thừa các chất dinh dưỡng:</p>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>a. Chất thải công nghiệp, sinh hoạt không qua xử lí nếu thải vào ao hồ cũng gây ra phú dưỡng.</span><div class="tf-opts"><label><input type="radio" name="p2_q1a" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q1a" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>b. Gây cản trở hấp thụ ánh sáng mặt trời, làm giảm sự quang hợp của thực vật thủy sinh.</span><div class="tf-opts"><label><input type="radio" name="p2_q1b" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q1b" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>c. Có thể quan sát được hiện tượng này thông qua sự xuất hiện dày đặc của tảo xanh.</span><div class="tf-opts"><label><input type="radio" name="p2_q1c" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q1c" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F" style="border:none;"><span>d. Xảy ra khi hàm lượng calcium đạt 300 μg/L và magnesium đạt 20 μg/L.</span><div class="tf-opts"><label><input type="radio" name="p2_q1d" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q1d" value="F"> SAI</label></div></div>
+                    </div>
+
+                    <div class="question">
+                        <p class="question-text">Câu 2. Phản ứng tổng họp ammonia: N2(g) + 3H2(g) ⇌ 2NH3(g) (ΔH = -92 kJ).</p>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>a. Tại thời điểm cân bằng, hỗn hợp gồm ammonia, nitrogen và hydrogen.</span><div class="tf-opts"><label><input type="radio" name="p2_q2a" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q2a" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>b. Ammonia dễ hoá lỏng hơn nên khi làm lạnh sẽ tách được NH3 lỏng ra khỏi hỗn hợp.</span><div class="tf-opts"><label><input type="radio" name="p2_q2b" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q2b" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F"><span>c. Nếu không sử dụng chất xúc tác thì không thể tạo thành ammonia.</span><div class="tf-opts"><label><input type="radio" name="p2_q2c" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q2c" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F" style="border:none;"><span>d. Nếu giảm áp suất của hệ thì cân bằng sẽ chuyển dịch theo chiều thuận.</span><div class="tf-opts"><label><input type="radio" name="p2_q2d" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q2d" value="F"> SAI</label></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <p class="question-text">Câu 3. Phát biểu về sulfuric acid và muối sulfate:</p>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>a. Sulfuric acid đặc có tính háo nước, gây bỏng nặng khi tiếp xúc với da tay.</span><div class="tf-opts"><label><input type="radio" name="p2_q3a" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q3a" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F"><span>b. Khi bị bỏng H2SO4 đặc, điều đầu tiên cần làm là xả nhanh chỗ bỏng với nước lạnh.</span><div class="tf-opts"><label><input type="radio" name="p2_q3b" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q3b" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>c. Sulfuric acid loãng có tính oxi hóa mạnh, khi tác dụng với kim loại sinh ra khí hydrogen.</span><div class="tf-opts"><label><input type="radio" name="p2_q3c" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q3c" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T" style="border:none;"><span>d. Thuốc thử nhận biết H2SO4 và muối sulfate là ion Ba2+ (BaCl2, Ba(OH)2...).</span><div class="tf-opts"><label><input type="radio" name="p2_q3d" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q3d" value="F"> SAI</label></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <p class="question-text">Câu 4. Quá trình N2 → NO → NO2 → HNO3 → NO3-:</p>
+                        <div class="tf-grid check-tf-p2" data-ans="F"><span>a. Cả bốn phản ứng trong chuỗi, nitrogen đều đóng vai trò là chất khử.</span><div class="tf-opts"><label><input type="radio" name="p2_q4a" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q4a" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="T"><span>b. Sản phẩm ion nitrate hòa tan trong nước mưa cung cấp đạm tự nhiên (phân bón).</span><div class="tf-opts"><label><input type="radio" name="p2_q4b" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q4b" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F"><span>c. Trong thực tế, phản ứng N2 tạo NO xảy ra ở nhiệt độ thường.</span><div class="tf-opts"><label><input type="radio" name="p2_q4c" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q4c" value="F"> SAI</label></div></div>
+                        <div class="tf-grid check-tf-p2" data-ans="F" style="border:none;"><span>d. Để tạo ra 124 kg ion nitrate cần 991,6 m3 khí N2 đkc (H=5%).</span><div class="tf-opts"><label><input type="radio" name="p2_q4d" value="T"> ĐÚNG</label><label><input type="radio" name="p2_q4d" value="F"> SAI</label></div></div>
+                    </div>
+
+                    <button type="button" id="btn-check-p2" class="btn-checkpoint" onclick="checkPart2()">🛑 XÁC THỰC TRẠM 2</button>
+                    
+                    <div id="remedial-p2" class="remedial-box">
+                        <h4>⚠️ BÁO ĐỘNG ĐỎ: SAI LỆCH LOGIC PHÂN TÍCH</h4>
+                        <p style="color: #374151; font-weight: bold; text-align: center;">Bạn cần phân tích đúng ít nhất 12/16 ý. Hãy trả lời câu hỏi phụ!</p>
+                        
+                        <div class="question" style="background: #fff; border: 1px solid #fcd34d;">
+                            <p class="question-text">1. (Củng cố) Để rửa sạch da khi không may bị dính H2SO4 đặc, thao tác sơ cứu chuẩn là:</p>
+                            <div class="options check-rem-p2" data-ans="B">
+                                <label><input type="radio" name="r2_1" value="A"> A. Rửa trực tiếp ngay dưới vòi nước mạnh.</label>
+                                <label><input type="radio" name="r2_1" value="B"> B. Lau khô bằng khăn mềm, sau đó rửa dưới vòi nước sạch nhiều lần.</label>
+                            </div>
+                        </div>
+                        <button type="button" style="width: 100%; border: none; padding: 12px; font-size: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; background: #d97706; margin-top: 10px;" onclick="verifyRemedialP2()">🔄 KIỂM TRA & ĐI TIẾP</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PHẦN III: TRẢ LỜI NGẮN ================= -->
+            <div id="part3-section" class="section-locked">
+                <div class="card">
+                    <h3>📂 TRẠM 3: CHỐT MÃ SỐ CUỐI (Điền đáp án)</h3>
+                    <p style="font-style: italic; color: #6b7280; margin-top: -10px; margin-bottom: 20px;">* Nhiệm vụ: Điền con số chính xác vào ô trống.</p>
+
+                    <div class="question">
+                        <p class="question-text">Câu 1. Phân tử sulfur trong trạng thái rắn tồn tại ở dạng vòng gồm có bao nhiêu nguyên tử sulfur?</p>
+                        <input type="text" class="check-text final-ans" data-ans="8,tám" placeholder="Nhập số...">
+                    </div>
+                    <div class="question">
+                        <p class="question-text">Câu 2. Cho các chất khí: NO, NO2, SO2, N2O và N2. Có bao nhiêu chất khí là nguyên nhân góp phần gây ra hiện tượng mưa acid?</p>
+                        <input type="text" class="check-text final-ans" data-ans="2,hai" placeholder="Nhập số...">
+                    </div>
+                    <div class="question">
+                        <p class="question-text">Câu 3. Cho dung dịch (NH4)2SO4 tác dụng lần lượt với: NaOH, Ba(OH)2, MgCl2, Ba(NO3)2 và NaNO3. Số phản ứng thu được kết tủa là?</p>
+                        <input type="text" class="check-text final-ans" data-ans="2,hai" placeholder="Nhập số...">
+                    </div>
+                    <div class="question">
+                        <p class="question-text">Câu 4. Cho H2SO4 đặc, nóng tiếp xúc với: đường saccharose, bột sulfur, thanh platinum, bột kẽm, KMnO4, NaCl. Có bao nhiêu chất bị oxi hoá?</p>
+                        <input type="text" class="check-text final-ans" data-ans="3,ba" placeholder="Nhập số...">
+                    </div>
+                    <div class="question">
+                        <p class="question-text">Câu 5. Hỗn hợp X gồm N2 và H2 có tỉ khối so với H2 bằng 3,6. Nung X có xúc tác Fe thu được khí Y có số mol giảm 8%. Hiệu suất tổng hợp NH3 (%) là?</p>
+                        <input type="text" class="check-text final-ans" data-ans="20" placeholder="Nhập số (chỉ ghi phần nguyên)...">
+                    </div>
+                    <div class="question">
+                        <p class="question-text">Câu 6. Thể tích (L) dung dịch H2SO4 98% (D=1,82 g/mL) thu được từ 1 tấn quặng pyrite 80% FeS2 với H=90% là? (Làm tròn hàng đơn vị)</p>
+                        <input type="text" class="check-text final-ans" data-ans="659" placeholder="Nhập số...">
+                    </div>
+                </div>
+
+                <!-- Bảng điểm -->
+                <div id="score-board">
+                    <div id="score-text"></div>
+                    <div id="error-breakdown" class="error-analysis" style="padding:15px; background:#f3f4f6; border-radius:8px; margin-top:15px;"></div>
+                </div>
+
+                <button type="button" class="btn-submit" onclick="gradeFinal()">🚀 NỘP BÀI KIỂM TRA</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- SCRIPT ĐIỀU KHIỂN & CHẤM ĐIỂM -->
+    <script>
+        // CẤU HÌNH WEB APP URL (Google Sheets)
+        // HỌC SINH/GIÁO VIÊN SẼ THAY ĐỔI ĐƯỜNG LINK NÀY BẰNG LINK DEPLOY TỪ APPS SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXWAAT79A_dZRrL6G5inkP4678CM128ndLWiAu5qGzJ5OOaJ8igGEuD9H0S9Q6LhFb7Q/exec";
+
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        let soundEnabled = true;
+
+        function initAudio() { if(!audioCtx) audioCtx = new AudioContext(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            let btn = document.getElementById('btnSound');
+            if(soundEnabled) { btn.innerHTML = '🔊 Âm thanh: BẬT'; btn.style.background = '#10b981'; initAudio(); sfxClick(); } 
+            else { btn.innerHTML = '🔇 Âm thanh: TẮT'; btn.style.background = '#6b7280'; }
+        }
+
+        function playTone(freq, type, duration, vol=0.1) {
+            if(!soundEnabled) return;
+            initAudio();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function sfxClick() { playTone(600, 'sine', 0.1, 0.05); }
+        function sfxWrong() { playTone(300, 'sawtooth', 0.3, 0.1); setTimeout(() => playTone(250, 'sawtooth', 0.4, 0.1), 200); }
+        function sfxLevelUp() { [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => { setTimeout(() => playTone(f, 'square', 0.2, 0.05), i * 150); }); }
+        function sfxWin() { [523.25, 523.25, 523.25, 659.25, 783.99, 1046.50].forEach((f, i) => { setTimeout(() => playTone(f, 'triangle', 0.3, 0.1), i * 200); }); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.addEventListener('change', sfxClick));
+            document.querySelectorAll('input[type="text"]').forEach(el => el.addEventListener('input', () => { if(el.value.length === 1) sfxClick(); }));
+            document.body.addEventListener('click', initAudio, {once: true});
+        });
+
+        // HỆ THỐNG RẼ NHÁNH
+        let p1_attempts = 0; let p2_attempts = 0;
+
+        function checkPart1() {
+            let name = document.getElementById('studentName').value;
+            if(!name) { alert("Vui lòng nhập Họ Tên trước khi làm bài!"); return; }
+
+            let p1Questions = document.querySelectorAll('.check-mcq-p1');
+            let correct = 0;
+            p1Questions.forEach(el => {
+                let ans = el.getAttribute('data-ans');
+                let selected = el.querySelector('input[type="radio"]:checked');
+                el.querySelectorAll('label').forEach(lbl => { lbl.style.borderColor = "#e5e7eb"; lbl.style.backgroundColor = "#fff"; });
+                if (selected) {
+                    if (selected.value === ans) { selected.parentElement.style.borderColor = "var(--success)"; selected.parentElement.style.backgroundColor = "#d1fae5"; correct++; } 
+                    else { selected.parentElement.style.borderColor = "var(--danger)"; selected.parentElement.style.backgroundColor = "#fee2e2"; el.querySelector(`input[value="${ans}"]`).parentElement.style.borderColor = "var(--success)"; }
+                } else { el.querySelector(`input[value="${ans}"]`).parentElement.style.borderColor = "var(--success)"; }
+            });
+
+            if (correct >= 12) {
+                sfxLevelUp(); alert(`🎉 Bạn đã đúng ${correct}/18 câu Trạm 1. Mở khóa Trạm 2!`);
+                document.getElementById('btn-check-p1').style.display = 'none';
+                let part2 = document.getElementById('part2-section');
+                part2.style.display = 'block'; setTimeout(() => { part2.style.opacity = '1'; }, 100);
+                part2.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                p1_attempts++;
+                if (p1_attempts === 1) {
+                    sfxWrong(); alert(`⚠️ Bạn đúng ${correct}/18 câu. Cần >= 12 câu. Vui lòng làm bài củng cố!`);
+                    document.getElementById('btn-check-p1').style.display = 'none';
+                    document.getElementById('remedial-p1').style.display = 'block';
+                } else {
+                    alert("🆘 CẤP CỨU: Hệ thống cho phép đi tiếp.");
+                    p1Questions.forEach(el => {
+                        let ans = el.getAttribute('data-ans');
+                        let correctRadio = el.querySelector(`input[value="${ans}"]`);
+                        if(correctRadio) { correctRadio.checked = true; el.querySelectorAll('label').forEach(lbl => { lbl.style.borderColor = "#e5e7eb"; lbl.style.backgroundColor = "#fff"; }); correctRadio.parentElement.style.borderColor = "var(--success)"; correctRadio.parentElement.style.backgroundColor = "#d1fae5"; }
+                    });
+                    document.getElementById('btn-check-p1').style.display = 'none';
+                    let part2 = document.getElementById('part2-section');
+                    part2.style.display = 'block'; setTimeout(() => { part2.style.opacity = '1'; }, 100);
+                    part2.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+
+        function verifyRemedialP1() {
+            let rem = document.querySelector('.check-rem-p1');
+            let ans = rem.getAttribute('data-ans');
+            let sel = rem.querySelector('input[type="radio"]:checked');
+            if(sel && sel.value === ans) {
+                sfxLevelUp(); alert("✅ Qua ải củng cố. Hãy quay lại sửa sai Trạm 1 để đi tiếp.");
+                document.getElementById('remedial-p1').style.display = 'none';
+                document.getElementById('btn-check-p1').style.display = 'block';
+                document.getElementById('btn-check-p1').innerText = "🛑 XÁC THỰC LẠI TRẠM 1";
+            } else { sfxWrong(); alert("❌ Sai bài củng cố. Thử lại!"); }
+        }
+
+        function checkPart2() {
+            let p2Questions = document.querySelectorAll('.check-tf-p2');
+            let correct = 0; let total = p2Questions.length; // 16
+            p2Questions.forEach(el => {
+                let ans = el.getAttribute('data-ans');
+                let selected = el.querySelector('input[type="radio"]:checked');
+                el.querySelectorAll('label').forEach(lbl => { lbl.style.backgroundColor = "#fff"; });
+                if (selected) { if (selected.value === ans) { selected.parentElement.style.backgroundColor = "#d1fae5"; correct++; } else { selected.parentElement.style.backgroundColor = "#fee2e2"; } }
+            });
+
+            if (correct >= 12) { 
+                sfxLevelUp(); alert(`🎉 Phân tích đúng ${correct}/${total} ý. Mở khóa Trạm 3!`);
+                document.getElementById('btn-check-p2').style.display = 'none';
+                let part3 = document.getElementById('part3-section');
+                part3.style.display = 'block'; setTimeout(() => { part3.style.opacity = '1'; }, 100);
+                part3.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                p2_attempts++;
+                if (p2_attempts === 1) {
+                    sfxWrong(); alert(`⚠️ Bạn đúng ${correct}/${total} ý. Cần >= 12 ý. Làm bài củng cố!`);
+                    document.getElementById('btn-check-p2').style.display = 'none';
+                    document.getElementById('remedial-p2').style.display = 'block';
+                } else {
+                    alert("🆘 CẤP CỨU: Mở cửa ải cuối.");
+                    p2Questions.forEach(el => {
+                        let ans = el.getAttribute('data-ans');
+                        let correctRadio = el.querySelector(`input[value="${ans}"]`);
+                        if(correctRadio) { correctRadio.checked = true; el.querySelectorAll('label').forEach(lbl => { lbl.style.backgroundColor = "#fff"; }); correctRadio.parentElement.style.backgroundColor = "#d1fae5"; }
+                    });
+                    document.getElementById('btn-check-p2').style.display = 'none';
+                    let part3 = document.getElementById('part3-section');
+                    part3.style.display = 'block'; setTimeout(() => { part3.style.opacity = '1'; }, 100);
+                    part3.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+
+        function verifyRemedialP2() {
+            let rem = document.querySelector('.check-rem-p2');
+            let ans = rem.getAttribute('data-ans');
+            let sel = rem.querySelector('input[type="radio"]:checked');
+            if(sel && sel.value === ans) {
+                sfxLevelUp(); alert("✅ Qua ải củng cố. Hãy sửa lỗi Trạm 2!");
+                document.getElementById('remedial-p2').style.display = 'none';
+                document.getElementById('btn-check-p2').style.display = 'block';
+                document.getElementById('btn-check-p2').innerText = "🛑 XÁC THỰC LẠI TRẠM 2";
+            } else { sfxWrong(); alert("❌ Bạn làm sai bài củng cố. Thử lại!"); }
+        }
+
+        // TỔNG KẾT VÀ LƯU GOOGLE SHEETS
+        function gradeFinal() {
+            let correctShort = 0;
+            document.querySelectorAll('.final-ans').forEach(el => {
+                let userVal = el.value.trim().toLowerCase();
+                let ansArr = el.getAttribute('data-ans').split(',');
+                if (ansArr.includes(userVal) && userVal !== "") {
+                    el.style.borderColor = "var(--success)"; el.style.backgroundColor = "#d1fae5"; correctShort++;
+                } else { el.style.borderColor = "var(--danger)"; el.style.backgroundColor = "#fee2e2"; }
+            });
+
+            let correctP1 = document.querySelectorAll('.check-mcq-p1 input[type="radio"]:checked[value]').length;
+            let actualCorrectP1 = Array.from(document.querySelectorAll('.check-mcq-p1')).filter(el => {
+                let sel = el.querySelector('input[type="radio"]:checked');
+                return sel && sel.value === el.getAttribute('data-ans');
+            }).length;
+
+            let actualCorrectP2 = Array.from(document.querySelectorAll('.check-tf-p2')).filter(el => {
+                let sel = el.querySelector('input[type="radio"]:checked');
+                return sel && sel.value === el.getAttribute('data-ans');
+            }).length;
+
+            let totalItems = 18 + 16 + 6; // 40 ý
+            let totalCorrect = actualCorrectP1 + actualCorrectP2 + correctShort;
+            let finalScore = (totalCorrect / totalItems) * 10;
+
+            document.getElementById('score-board').style.display = 'block';
+            sfxWin(); 
+            document.getElementById('score-text').innerHTML = `<h2 style="color:var(--success); margin:0;">ĐIỂM TỔNG KẾT: ${finalScore.toFixed(2)} / 10</h2><p style="font-size:1.1rem; color:#4b5563;">(Hoàn thành đúng ${totalCorrect}/40 mục)</p>`;
+
+            let breakdownHTML = `<h4>📊 Phân tích bài làm:</h4><ul>
+                <li><b>Phần I (Trắc nghiệm):</b> Đúng ${actualCorrectP1}/18 câu</li>
+                <li><b>Phần II (Đúng/Sai):</b> Đúng ${actualCorrectP2}/16 ý</li>
+                <li><b>Phần III (Trả lời ngắn):</b> Đúng ${correctShort}/6 câu</li>
+            </ul>`;
+            document.getElementById('error-breakdown').innerHTML = breakdownHTML;
+
+            // GỬI GOOGLE SHEETS QUA APPS SCRIPT
+            let loi_mcq = 18 - actualCorrectP1; // Lỗi trắc nghiệm
+            let loi_tf = 16 - actualCorrectP2;  // Lỗi đúng sai
+            let loi_short = 6 - correctShort;   // Lỗi trả lời ngắn
+
+            let payload = {
+                hoTen: document.getElementById('studentName').value || "Khách",
+                lop: document.getElementById('studentClass').value || "Không ghi",
+                diem: finalScore.toFixed(2),
+                cauDung: totalCorrect,
+                cauSai: totalItems - totalCorrect,
+                cauChuaLam: 0,
+                tongSoCau: totalItems,
+                loi_hs1: 0,
+                loi_hs2: 0,
+                loi_hs3: 0,
+                loi_hs4_mcq: loi_mcq,
+                loi_hs4_tf: loi_tf,
+                loi_hs4_short: loi_short
+            };
+
+            let submitBtn = document.querySelector('.btn-submit');
+            submitBtn.innerText = "⏳ ĐANG LƯU DỮ LIỆU...";
+            submitBtn.disabled = true;
+
+            if (WEB_APP_URL.includes("THAY_LINK")) {
+                submitBtn.innerText = "✅ BÀI KIỂM TRA ĐÃ HOÀN TẤT";
+                alert("Lưu ý: Chưa thiết lập link Google Sheets nên dữ liệu sẽ không được lưu trực tuyến. Giáo viên cần gắn Web App URL.");
+                return;
+            }
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                mode: 'no-cors' // Yêu cầu bảo mật của gg apps script
+            }).then(() => {
+                submitBtn.innerText = "✅ ĐÃ LƯU KẾT QUẢ THÀNH CÔNG";
+                alert("Dữ liệu đã được ghi nhận vào hệ thống!");
+            }).catch(e => {
+                submitBtn.innerText = "❌ LỖI LƯU DỮ LIỆU";
+                console.error(e);
+            });
+        }
+    </script>
+</body>
+</html>
